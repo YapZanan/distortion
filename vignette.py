@@ -1,3 +1,5 @@
+import time
+start = time.time()
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
@@ -119,16 +121,21 @@ def correct_vignetting(image):
 
   print(f"Coefficients: ({a}, {b}, {c}), Minimal entropy: {h_min}")
 
-  plt.imshow(g(r, a, b, c))
-  plt.show()
+  # plt.imshow(g(r, a, b, c))
+  # plt.show()
 
   res = image * np.stack(3 * [g(r, a, b, c)], axis=2)
 
-  return np.clip(res, 0, 255).astype(np.uint8)
+  return np.clip(res, 0, 255).astype(np.uint8), g(r, a, b, c)
 
-image = plt.imread('2.jpeg')
-plt.imshow(image)
-corrected_image = correct_vignetting(image)
-plt.imshow(corrected_image)
-plt.show()
+image = plt.imread('1.jpeg')
+image_ = plt.imread('1.jpeg')
+# plt.imshow(image)
+corrected_image, a = correct_vignetting(image)
+corrected_image_, a_ = correct_vignetting(image_)
+print(np.array_equal(a, a))
+# end = time.time()
+# print(end - start)
+# plt.imshow(corrected_image)
+# plt.show()
 
